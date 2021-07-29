@@ -16,6 +16,9 @@
 6. 'Configuration Properties >> Linker >> General' in 'Additional Library Directories' add ';common/lib' 
 6. 'Configuration Properties >> Linker >> Input' in 'Additional Library Directories' add 'glew64.lib' 
 8. 'Configuration Properties >> General' change 'Output Directory' to '$(ProjectDir)bin/win64/$(Configuration)/' 
-
+## Linux
+1. TODO Install ???
+2. ...
+3. Use CMake or Make
 # Sources
 Large parts of Code taken from https://www.informit.com/articles/article.aspx?p=2455391&seqNum=2

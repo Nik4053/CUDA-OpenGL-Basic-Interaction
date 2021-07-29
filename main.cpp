@@ -10,12 +10,12 @@
     #define WIN32_LEAN_AND_MEAN
     #include <Windows.h>
 #endif
-#if defined(__APPLE__) || defined(__unix__)
-    #include <GLUT/glut.h>
-#else
+//#if defined(__APPLE__) || defined(__unix__)
+//    #include <GLUT/glut.h>
+//#else
     #include <GL/glew.h>
     #include <GL/freeglut.h>
-#endif
+//#endif
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
 #ifdef _WIN32
