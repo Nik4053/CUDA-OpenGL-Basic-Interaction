@@ -1,6 +1,6 @@
 #include "kernel.h"
 #include "stdio.h"
-#define TX 32*4
+#define TX 32
 #define TY 32
 
 #define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
