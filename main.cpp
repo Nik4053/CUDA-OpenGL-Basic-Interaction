@@ -3,28 +3,21 @@
 #include <stdlib.h>
 
 #ifdef _WIN32
-// save diagnostic state
-#pragma warning( push, 3 )
-
-#define WINDOWS_LEAN_AND_MEAN
-#define NOMINMAX
-#define WIN32_LEAN_AND_MEAN
-
-#include <Windows.h>
-
+    // save diagnostic state
+    #pragma warning( push, 3 )
+    #define WINDOWS_LEAN_AND_MEAN
+    #define NOMINMAX
+    #define WIN32_LEAN_AND_MEAN
+    #include <Windows.h>
 #endif
-//#if defined(__APPLE__) || defined(__unix__)
-//    #include <GLUT/glut.h>
-//#else
 #include <GL/glew.h>
 #include <GL/freeglut.h>
-//#endif
 #include <cuda_runtime.h>
 #include <cuda_gl_interop.h>
 
 #ifdef _WIN32
-// turn the warnings back on
-#pragma warning( pop )
+    // turn the warnings back on
+    #pragma warning( pop )
 #endif
 
 #include "interactions.h"
@@ -41,6 +34,8 @@ void render() {
                                          cuda_pbo_resource);
     kernelLauncher(d_out, W, H, loc);
     cudaGraphicsUnmapResources(1, &cuda_pbo_resource, 0);
+
+    // Can be deleted. Shows current location in window title
     char title[256];
     const char *oldTitle = TITLE_STRING;
     sprintf(title, "%s: Location = %d, sys = %d", oldTitle, loc.x, loc.y);

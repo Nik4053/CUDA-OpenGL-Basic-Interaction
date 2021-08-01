@@ -27,33 +27,38 @@ void mouseDrag(int x, int y) {
     glutPostRedisplay();
 }
 
-bool leftMouseButtonDown = 0;
-bool rightMouseButtonDown = 0;
-bool middleMouseButtonDown = 0;
 
+/**
+ * gets called once for each mouse button press.
+ * @param button the button that was pressed
+ * @param state If pressed or released: GLUT_DOWN or GLUT_UP
+ * @param x,y The x,y position of the mouse at the time of this event
+ */
 void mouse(int button, int state, int x, int y) {
     // Save the left button state
     if (button == GLUT_LEFT_BUTTON) {
-        leftMouseButtonDown = (state == GLUT_DOWN);
+        // leftMouseButtonDown = (state == GLUT_DOWN);
     } else if (button == GLUT_RIGHT_BUTTON) {
         // right MouseButton
-        rightMouseButtonDown = (state == GLUT_DOWN);
+        // rightMouseButtonDown = (state == GLUT_DOWN);
     } else if (button == GLUT_MIDDLE_BUTTON) {
         // middle MouseButton
-        middleMouseButtonDown = (state == GLUT_DOWN);
+        // middleMouseButtonDown = (state == GLUT_DOWN);
     }
-
-
     // Save the mouse position
-//    mousePos.x = x;
-//    mousePos.y = y;
+    // mousePos.x = x;
+    // mousePos.y = y;
 }
 
+/**
+ * Gets only called on mouse wheel movement
+ * @param button the buttons on the mouse that are currently pressed. In bitmask format. 1<<0 = left mouse button, 1<<1 right mouse button, 1<<4 middle mouse button
+ * @param dir the direction of the wheel roll. >0 is up / zoom in,
+ * @param x,y The x,y position of the mouse at the time of this event
+ */
 void mouseWheel(int button, int dir, int x, int y) {
 //    if(button&1<<0) printf("Left Mouse Button\n");
 //    if(button&1<<1) printf("right Mouse Button\n");
-//    //if(button&1<<2) printf("??1 Mouse Button\n");
-//    //if(button&1<<3) printf("??2 Mouse Button\n");
 //    if(button&1<<4) printf("Middle Mouse Button\n");
     if (dir > 0) {
         // Zoom in
