@@ -97,6 +97,7 @@ void exitfunc() {
 
 int main(int argc, char **argv) {
     printInstructions();
+    init(W,H);
     initGLUT(&argc, argv);
     gluOrtho2D(0, W, H, 0);
     glutKeyboardFunc(keyboard);
@@ -109,5 +110,6 @@ int main(int argc, char **argv) {
     initPixelBuffer();
     glutMainLoop();
     atexit(exitfunc);
+    destroy();
     return 0;
 }

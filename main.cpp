@@ -31,8 +31,9 @@ int main(int argc, char **argv) {
     uchar4* imageCUDA;
     gpuErrchk(cudaMalloc((void**)&imageCUDA,w*h*sizeof(imageCUDA)));
     int2 loc = {0,0};
+    init(w,h);
     startCUDATimer();
-    for (size_t i = 0; i < 600; ++i) {
+    for (size_t i = 0; i < frames; ++i) {
         kernelLauncher(imageCUDA, w, h, loc);
     }
     //gpuErrchk( cudaPeekAtLastError() );
