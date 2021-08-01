@@ -1,7 +1,18 @@
 #include "kernel.h"
-
-#define TX 32
+#include "stdio.h"
+#define TX 32*4
 #define TY 32
+
+#define gpuErrchk(ans) { gpuAssert((ans), __FILE__, __LINE__); }
+inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort=true)
+{
+    if (code != cudaSuccess)
+    {
+        fprintf(stderr,"GPUassert: %s %s %d\n", cudaGetErrorString(code), file, line);
+        if (abort) exit(code);
+    }
+}
+
 
 __device__
 unsigned char clip(int n) { return n > 255 ? 255 : (n < 0 ? 0 : n); }
@@ -28,4 +39,5 @@ void kernelLauncher(uchar4 *d_out, int w, int h, int2 pos) {
     const dim3 gridSize = dim3((w + TX - 1) / TX, (h + TY - 1) / TY, 1); // + TX - 1 for w size that is not divisible by TX
 
     distanceKernel<float><<<gridSize, blockSize>>>(d_out, w, h, pos);
+    gpuErrchk( cudaPeekAtLastError() );
 }
