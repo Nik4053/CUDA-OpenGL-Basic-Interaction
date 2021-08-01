@@ -45,9 +45,6 @@ target_compile_options(CUDAKERNEL
 find_package(CUDA  REQUIRED)
 include_directories("${CUDA_INCLUDE_DIRS}")
 
-IF (WIN32)
-endif()
-
 target_link_libraries(${APP_EXE}  CUDAKERNEL)
 IF (WIN32)
     target_compile_options(${APP_EXE}
@@ -57,5 +54,4 @@ ELSEIF(UNIX)
     target_compile_options(${APP_EXE}
         PRIVATE -Wall -pedantic -std=c++17 -fmax-errors=5 -march=native -D_XOPEN_SOURCE=700
     )
-ELSE()
 endif()

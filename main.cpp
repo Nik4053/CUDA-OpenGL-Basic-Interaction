@@ -37,7 +37,7 @@ void render() {
   kernelLauncher(d_out, W, H, loc);
   cudaGraphicsUnmapResources(1, &cuda_pbo_resource, 0);
   char title[256];
-  char *oldTitle = TITLE_STRING;
+  const char* oldTitle = TITLE_STRING;
   sprintf(title, "%s: Location = %d, sys = %d",oldTitle, loc.x, loc.y);
   glutSetWindowTitle(title);
 }
@@ -99,8 +99,8 @@ int main(int argc, char** argv) {
   glutSpecialFunc(handleSpecialKeypress);
   glutPassiveMotionFunc(mouseMove);
   glutMotionFunc(mouseDrag);
-    glutMouseWheelFunc(mouseWheel);
-    glutMouseFunc(mouse);
+  glutMouseWheelFunc(mouseWheel);
+  glutMouseFunc(mouse);
   glutDisplayFunc(display);
   initPixelBuffer();
   glutMainLoop();
