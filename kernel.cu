@@ -37,7 +37,7 @@ int* distanceCUDA;
 void kernelLauncher(uchar4 *d_out, int w, int h, int2 pos) {
     // 3d version
     const dim3 blockSize(TX, TY, 1);
-    const dim3 gridSize = dim3((w + TX - 1) / TX, (h + TY - 1) / TY, 1); // + TX - 1 for w size that is not divisible by TX
+    const dim3 gridSize = dim3((w + blockSize.x - 1) / blockSize.x, (h + blockSize.y - 1) / blockSize.y, 1); // + TX - 1 for w size that is not divisible by TX
 
     distanceKernel<<<gridSize, blockSize>>>(distanceCUDA, w, h, pos);
     gpuErrchk( cudaPeekAtLastError() );
