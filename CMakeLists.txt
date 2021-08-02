@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(SampleProject LANGUAGES CUDA CXX)
+project(CUDA/OPENGL-SampleProject LANGUAGES CUDA CXX)
 
 if (DEBUG)
     set(CMAKE_BUILD_TYPE Debug)

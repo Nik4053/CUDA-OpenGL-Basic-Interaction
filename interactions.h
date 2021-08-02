@@ -48,6 +48,8 @@ void mouse(int button, int state, int x, int y) {
     // Save the mouse position
     // mousePos.x = x;
     // mousePos.y = y;
+
+    //glutPostRedisplay();
 }
 
 /**
@@ -66,7 +68,7 @@ void mouseWheel(int button, int dir, int x, int y) {
         // Zoom out
     }
 
-    return;
+    // glutPostRedisplay();
 }
 
 void handleSpecialKeypress(int key, int x, int y) {

@@ -22,3 +22,8 @@
 3. Use CMake or Make
 # Sources
 Large parts of Code taken from https://www.informit.com/articles/article.aspx?p=2455391&seqNum=2
+
+# Option
+Compile with `-DHEADLESS=TRUE` for performance measurement without OpenGL.
+
+Change the resolution in `interactions.h`.
