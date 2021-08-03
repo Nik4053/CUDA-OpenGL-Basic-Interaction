@@ -13,7 +13,7 @@
 4. From 'C:\ProgramData\NVIDIA Corporation\CUDA Samples\v11.4' copy the 'bin' folder into this repo
 4. Open the properties of the Solution
 5. 'Configuration Properties >> C/C++ >> General' in 'AdditionalIncludeDirectories' add ';common/inc' 
-6. 'Configuration Properties >> Linker >> General' in 'Additional Library Directories' add ';common/lib' 
+6. 'Configuration Properties >> Linker >> General' in 'Additional Library Directories' add ';common/lib/$(PlatformName)' 
 6. 'Configuration Properties >> Linker >> Input' in 'Additional Library Directories' add 'glew64.lib' 
 8. 'Configuration Properties >> General' change 'Output Directory' to '$(ProjectDir)bin/win64/$(Configuration)/' 
 ## Linux
