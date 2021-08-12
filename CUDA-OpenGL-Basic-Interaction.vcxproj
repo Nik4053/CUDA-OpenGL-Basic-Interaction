@@ -86,8 +86,11 @@
   <ItemGroup>
     <ClInclude Include="interactions.h" />
     <ClInclude Include="kernel.h" />
+    <ClInclude Include="simMain.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="mainNoViz.cpp" />
     <ClCompile Include="mainViz.cpp" />
   </ItemGroup>
   <ItemGroup>

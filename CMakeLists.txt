@@ -8,7 +8,7 @@ if (DEBUG)
     message("Debug build.")
 else ()
     set(CMAKE_BUILD_TYPE Release)
-    add_definitions(-DNDEBUG)
+    #add_definitions(-DNDEBUG)
     message("Release build.")
 endif ()
 
@@ -17,9 +17,12 @@ SET(APP_EXE main)
 if (HEADLESS)
     ADD_EXECUTABLE(${APP_EXE} ${APP_EXE}.cpp)
     message("Headless build.")
+    target_sources(${APP_EXE} PRIVATE mainNoViz.cpp)
 else ()
-    ADD_EXECUTABLE(${APP_EXE} ${APP_EXE}Viz.cpp)
+    ADD_EXECUTABLE(${APP_EXE} ${APP_EXE}.cpp)
+    add_definitions(-DSIMVIZ)
     message("Visual build.")
+    target_sources(${APP_EXE} PRIVATE mainViz.cpp)
 endif()
 
 
@@ -53,6 +56,7 @@ find_package(CUDA REQUIRED)
 include_directories("${CUDA_INCLUDE_DIRS}")
 
 target_link_libraries(${APP_EXE} CUDAKERNEL)
+
 IF (WIN32)
     target_compile_options(${APP_EXE}
             PRIVATE /std:c++17 /Wall

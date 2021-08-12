@@ -1,3 +1,4 @@
+#include "simMain.h"
 #include "kernel.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -95,7 +96,7 @@ void exitfunc() {
     }
 }
 
-int main(int argc, char **argv) {
+int simMainViz(int argc, char **argv) {
     printInstructions();
     init(W,H);
     initGLUT(&argc, argv);
