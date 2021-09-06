@@ -32,10 +32,11 @@ int simMainNoViz(int argc, char **argv) {
     uchar4* imageCUDA;
     gpuErrchk(cudaMalloc((void**)&imageCUDA,w*h*sizeof(imageCUDA)));
     int2 loc = {0,0};
-    init(w,h);
+    GpuData gpuData = { w,h,loc };
+    init(&gpuData);
     startCUDATimer();
     for (size_t i = 0; i < frames; ++i) {
-        kernelLauncher(imageCUDA, w, h, loc);
+        kernelLauncher(imageCUDA, &gpuData);
     }
     //gpuErrchk( cudaPeekAtLastError() );
     float time = printCUDATime(false);

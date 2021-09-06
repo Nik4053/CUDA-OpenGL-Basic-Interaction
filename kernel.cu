@@ -1,5 +1,7 @@
 #include "kernel.h"
 #include "stdio.h"
+#include "math.h"
+#include "device_launch_parameters.h"
 #define TX 32
 #define TY 32
 
@@ -32,23 +34,25 @@ void imageKernel(uchar4 *d_out,const int* distanceData, int w, int h) {
     d_out[i].z = 0;
     d_out[i].w = 255;
 }
-int* distanceCUDA;
 
-void kernelLauncher(uchar4 *d_out, int w, int h, int2 pos) {
+void kernelLauncher(uchar4* d_out, GpuData *gpudata) {
+    int w = gpudata->w;
+    int h = gpudata->h;
+    int2 pos = gpudata->pos;
     // 3d version
     const dim3 blockSize(TX, TY, 1);
     const dim3 gridSize = dim3((w + blockSize.x - 1) / blockSize.x, (h + blockSize.y - 1) / blockSize.y, 1); // + TX - 1 for w size that is not divisible by TX
 
-    distanceKernel<<<gridSize, blockSize>>>(distanceCUDA, w, h, pos);
+    distanceKernel<<<gridSize, blockSize>>>(gpudata->CUDAdistanceData, w, h, pos);
     gpuErrchk( cudaPeekAtLastError() );
-    imageKernel<<<gridSize, blockSize>>>(d_out,distanceCUDA, w, h);
+    imageKernel<<<gridSize, blockSize>>>(d_out, gpudata->CUDAdistanceData, w, h);
     gpuErrchk( cudaPeekAtLastError() );
 }
 
-void init(int w, int h){
-    cudaMalloc((void**)&distanceCUDA,w*h*sizeof(*distanceCUDA));
+void init(GpuData *gpudata){
+    cudaMalloc((void**)&gpudata->CUDAdistanceData,gpudata->w * gpudata->h *sizeof(*gpudata->CUDAdistanceData));
 }
 
-void destroy(){
-    cudaFree(distanceCUDA);
+void destroy(GpuData* gpudata){
+    cudaFree(gpudata->CUDAdistanceData);
 }

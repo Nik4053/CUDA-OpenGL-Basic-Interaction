@@ -19,8 +19,10 @@ Only needed if you do not want to use the included .vcxproj file.
 8. 'Configuration Properties >> Linker >> General' in 'Additional Library Directories' add ';common/lib/$(PlatformName)' 
 9. 'Configuration Properties >> Linker >> Input' in 'Additional Library Directories' add 'glew64.lib' 
 10. 'Configuration Properties >> General' change 'Output Directory' to '$(ProjectDir)bin/win64/$(Configuration)/'
+5. For Visual Mode go to: ``Project > Properties > Configuration Properties > C/C++ > Preprocessor > Preprocessor Definitions`` and add `SIMVIZ`
 #### Existing Visual Studio Project
 4. Just open the included CUDA-OpenGL-Basic-Interaction.vcxproj file 
+5. For Visual Mode go to: ``Project > Properties > Configuration Properties > C/C++ > Preprocessor > Preprocessor Definitions`` and add `SIMVIZ`
 ## Linux
 1. `sudo apt install nvidia-cuda-toolkit`
 2. `sudo apt-get install freeglut3-dev`
@@ -37,22 +39,22 @@ see the [cuda instalation guide](https://docs.nvidia.com/cuda/cuda-installation-
 
 # Options
 Change the resolution in `interactions.h`.
-## Headless Mode
-Will not visualize the date and therefore does not need the corresponding libraries.
+## Headless or Visual Mode
+Headless mode will not visualize the data and therefore does not need the corresponding libraries.
 Can be used for performance measurement without OpenGL or for using the data otherwise.
 
 Activate by defining `HEADLESS`.
 
 For cmake  compile with `cmake -DHEADLESS=TRUE ..`
 
-For Visual Studio go to: ``Project > Properties > Configuration Properties > Debugging > Environment`` and add `SIMVIZ=TRUE`
+For Visual Studio go to: ``Project > Properties > Configuration Properties > C/C++ > Preprocessor > Preprocessor Definitions`` and remove `SIMVIZ`
 
 ## Debug Mode
 Activate by defining `DEBUG`.
 
 For cmake  compile with `cmake -DEBUG=TRUE ..`
 
-For Visual Studio go to: ``Project > Properties > Configuration Properties > Debugging > Environment`` and add `DEBUG=TRUE`
+For Visual Studio go to: ``Project > Properties > Configuration Properties > Debugging > Environment`` and add `DEBUG`
 
 
 # Sources
