@@ -9,8 +9,11 @@
     #define WINDOWS_LEAN_AND_MEAN
     #define NOMINMAX
     #define WIN32_LEAN_AND_MEAN
+
     #include <Windows.h>
+
 #endif
+
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <cuda_runtime.h>
@@ -28,6 +31,7 @@ GLuint pbo = 0;     // OpenGL pixel buffer object
 GLuint tex = 0;     // OpenGL texture object
 struct cudaGraphicsResource *cuda_pbo_resource;
 struct GpuData gpuData;
+
 void render() {
     uchar4 *d_out = 0;
     cudaGraphicsMapResources(1, &cuda_pbo_resource, 0);
@@ -99,7 +103,7 @@ void exitfunc() {
 
 int simMainViz(int argc, char **argv) {
     printInstructions();
-    gpuData = { W,H,loc };
+    gpuData = {W, H, loc};
     init(&gpuData);
     initGLUT(&argc, argv);
     gluOrtho2D(0, W, H, 0);
