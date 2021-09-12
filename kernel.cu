@@ -6,9 +6,23 @@
 #define TX 32
 #define TY 32
 
+struct GpuData {
+    int w;
+    int h;
+    int* distanceData;
+};
+
+// 3d version
+const dim3 blockSize(TX, TY, 1);
+dim3 gridSize;
+
+struct GpuData* gpuDataCPU; // used for freeing all cuda memory again
+__device__
+struct GpuData* gpuDataLOCAL; // do not use in device code!!!
 
 __device__
 unsigned char clip(int n) { return n > 255 ? 255 : (n < 0 ? 0 : n); }
+
 
 __global__
 void distanceKernel(GpuData* gpudata, int2 pos) {
@@ -35,22 +49,36 @@ void imageKernel(uchar4 *d_out, GpuData* gpudata) {
     d_out[i].w = 255;
 }
 
-void kernelLauncher(uchar4 *d_out, GpuData *gpudata, int2 pos, int w, int h) {
-    // 3d version
-    const dim3 blockSize(TX, TY, 1);
-    const dim3 gridSize = dim3((w + blockSize.x - 1) / blockSize.x, (h + blockSize.y - 1) / blockSize.y,
-                               1); // + TX - 1 for w size that is not divisible by TX
+void kernelLauncher(uchar4 *d_out, int2 pos) {
+    
 
-    distanceKernel<<<gridSize, blockSize>>>(gpudata, pos);
+    distanceKernel<<<gridSize, blockSize>>>(gpuDataLOCAL, pos);
     gpuErrchk(cudaPeekAtLastError());
-    imageKernel<<<gridSize, blockSize>>>(d_out, gpudata);
+    imageKernel<<<gridSize, blockSize>>>(d_out, gpuDataLOCAL);
     gpuErrchk(cudaPeekAtLastError());
 }
 
-void init(GpuData *gpudata) {
-    cudaMalloc((void **) &gpudata->distanceData, gpudata->w * gpudata->h * sizeof(*gpudata->distanceData));
+void init(int w, int h) {
+
+    gridSize = dim3((w + blockSize.x - 1) / blockSize.x, (h + blockSize.y - 1) / blockSize.y,
+        1); // + TX - 1 for w size that is not divisible by TX
+    // alloc cpu version of struct
+    //GpuData tmp = { w,h };
+    gpuDataCPU = (GpuData*)malloc(sizeof(GpuData));
+    gpuDataCPU->w = w;
+    gpuDataCPU->h = h;
+    // fill it with cuda references
+    cudaMalloc((void**)&gpuDataCPU->distanceData, gpuDataCPU->w * gpuDataCPU->h * sizeof(*gpuDataCPU->distanceData));
+    // alloc cuda version of struct
+    cudaMalloc((void**)&gpuDataLOCAL, sizeof(GpuData)); gpuErrchk(cudaPeekAtLastError());
+    // copy references to cuda version
+    cudaMemcpy(gpuDataLOCAL, gpuDataCPU, sizeof(GpuData), cudaMemcpyHostToDevice); gpuErrchk(cudaPeekAtLastError());
+    
+
 }
 
-void destroy(GpuData *gpudata) {
-    cudaFree(gpudata->distanceData);
+void destroy() {
+    cudaFree(gpuDataCPU->distanceData);
+    free(gpuDataCPU);
+    cudaFree(gpuDataLOCAL);
 }

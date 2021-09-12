@@ -30,8 +30,7 @@
 GLuint pbo = 0;     // OpenGL pixel buffer object
 GLuint tex = 0;     // OpenGL texture object
 struct cudaGraphicsResource *cuda_pbo_resource;
-__device__
-struct GpuData *gpuData;
+
 
 void render() {
     uchar4 *d_out = 0;
@@ -39,7 +38,7 @@ void render() {
     cudaGraphicsResourceGetMappedPointer((void **) &d_out, NULL,
                                          cuda_pbo_resource);
 
-    kernelLauncher(d_out, gpuData,loc,W,H);
+    kernelLauncher(d_out,loc);
     cudaGraphicsUnmapResources(1, &cuda_pbo_resource, 0);
 
     // Can be deleted. Shows current location in window title
@@ -104,10 +103,7 @@ void exitfunc() {
 
 int simMainViz(int argc, char **argv) {
     printInstructions();
-    GpuData gpuDataCPU = { W, H };
-    init(&gpuDataCPU);
-    cudaMalloc((void**)&gpuData, sizeof(GpuData)); gpuErrchk(cudaPeekAtLastError());
-    cudaMemcpy(gpuData, &gpuDataCPU, sizeof(GpuData), cudaMemcpyHostToDevice); gpuErrchk(cudaPeekAtLastError());
+    init(W,H);
     initGLUT(&argc, argv);
     gluOrtho2D(0, W, H, 0);
     glutKeyboardFunc(keyboard);
@@ -120,7 +116,6 @@ int simMainViz(int argc, char **argv) {
     initPixelBuffer();
     glutMainLoop();
     atexit(exitfunc);
-    destroy(&gpuDataCPU);
-    cudaFree(gpuData);
+    destroy();
     return 0;
 }

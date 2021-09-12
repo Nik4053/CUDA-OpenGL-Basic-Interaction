@@ -17,17 +17,13 @@ inline void gpuAssert(cudaError_t code, const char *file, int line, bool abort =
     }
 }
 
-struct GpuData {
-    int w;
-    int h;
-    int *distanceData;
-};
-
-void kernelLauncher(uchar4 *d_out, GpuData* gpudata, int2 pos, int w, int h);
 
 
-void init(GpuData* gpudata);
+void kernelLauncher(uchar4 *d_out, int2 pos);
 
-void destroy(GpuData* gpudata);
+
+void init(int w, int h);
+
+void destroy();
 
 #endif
